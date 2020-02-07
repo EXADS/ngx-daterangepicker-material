@@ -121,14 +121,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   /** Set custom ranges */
   @Input() ranges: any;
 
-
-
-
-  @Input()
-  isInvalidDate: Function;
-  @Input()
-  isCustomDate: Function;
-
+  @Input() isInvalidDate: Function;
+  @Input() isCustomDate: Function;
 
   // CUSTOM CSS
   @Input() firstMonthDayClass: string = null;
