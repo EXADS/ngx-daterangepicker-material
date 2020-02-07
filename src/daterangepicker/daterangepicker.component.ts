@@ -46,19 +46,9 @@ export class DaterangepickerComponent implements OnInit {
   timepickerVariables: {left: any, right: any} = {left: {}, right: {}};
   daterangepicker: {start: FormControl, end: FormControl} = {start: new FormControl(), end: new FormControl()};
   applyBtn: {disabled: boolean} = {disabled: false};
-  @Input()
-  startDate = moment().startOf('day');
-  @Input()
-  endDate = moment().endOf('day');
 
-  @Input()
-  dateLimit: number = null;
   // used in template for compile time support of enum values.
   sideEnum = SideEnum;
-  /** Minimun selectable date */
-  @Input() minDate: _moment.Moment = null;
-  /** Maximum selectable date */
-  @Input() maxDate: _moment.Moment = null;
 
   // CALENDAR SETTINGS
   /** Flag to display only one datepicker */
@@ -69,6 +59,28 @@ export class DaterangepickerComponent implements OnInit {
   @Input() showWeekNumbers = false;
   /** Flag to display ISO week numbers */
   @Input() showISOWeekNumbers = false;
+  /** Position calendar vertically */
+  @Input() drops: 'up' | 'down';
+  /** Position calendar horizontally  */
+  @Input() opens: 'right' | 'left' | 'center' | 'auto';
+  /** Minimun selectable date */
+  @Input() minDate: _moment.Moment = null;
+  /** Maximum selectable date */
+  @Input() maxDate: _moment.Moment = null;
+  /** Start date of current selection */
+  @Input() startDate = moment().startOf('day');
+  /** End date of current selection */
+  @Input() endDate = moment().endOf('day');
+  /** Max number of dates a user can select */
+  @Input() dateLimit: number = null;
+  /** Flag to display custom range label on ranges */
+  @Input() showCustomRangeLabel: boolean;
+  /** Flag to display apply button */
+  @Input() showCancelButton = false;
+  /** Flag to display apply button */
+  @Input() showApplyButton = false;
+  /** Flag to display clear button */
+  @Input() showClearButton = false;
 
   // CALENDAR BEHAVIOR
   /** Flag to keep the calendar open after choosing a range */
@@ -93,28 +105,24 @@ export class DaterangepickerComponent implements OnInit {
   @Input() maxSpan = false;
 
   // timepicker variables
-  @Input()
-  timePicker: Boolean = false;
-  @Input()
-  timePicker24Hour: Boolean = false;
-  @Input()
-  timePickerIncrement = 1;
-  @Input()
-  timePickerSeconds: Boolean = false;
+  @Input() timePicker: Boolean = false;
+  @Input() timePicker24Hour: Boolean = false;
+  @Input() timePickerIncrement = 1;
+  @Input() timePickerSeconds: Boolean = false;
   // end of timepicker variables
 
-
-  _locale: LocaleConfig = {};
+  /** Set calendar locale settings */
+  private _locale: LocaleConfig = {};
   @Input() set locale(value) {
     this._locale = {...this._localeService.config, ...value};
   }
+
   get locale(): any {
     return this._locale;
   }
 
-  /** Custom ranges */
-  _ranges: any = {};
-
+  /** Set custom ranges */
+  private _ranges: any = {};
   @Input() set ranges(value) {
       this._ranges = value;
       this.renderRanges();
@@ -124,17 +132,7 @@ export class DaterangepickerComponent implements OnInit {
       return this._ranges;
   }
 
-  /** Flag to display custom range label on ranges */
-  @Input() showCustomRangeLabel: boolean;
-  /** Flag to display apply button */
-  @Input() showCancelButton = false;
-  /** Flag to display apply button */
-  @Input() showApplyButton = false;
-  /** Flag to display clear button */
-  @Input() showClearButton = false;
-
-
-  /** Custom CSS */
+  // CUSTOM CSS
   @Input() firstMonthDayClass: string = null;
   @Input() lastMonthDayClass: string = null;
   @Input() emptyWeekRowClass: string = null;
@@ -144,16 +142,14 @@ export class DaterangepickerComponent implements OnInit {
   chosenRange: string;
   rangesArray: Array<any> = [];
 
-  /** Datepicker state */
+  /** Calendar state */
   isShown = false;
   inline = true;
   leftCalendar: any = {};
   rightCalendar: any = {};
-  showCalInRanges = false;
+  showCalendarInRanges = false;
 
-  options: any = {} ; // should get some opt from user
-  @Input() drops: string;
-  @Input() opens: string;
+  options: any = {}; // should get some opt from user
 
   /** Event on date selected */
   @Output() choosedDate: EventEmitter<Object>;
@@ -161,9 +157,9 @@ export class DaterangepickerComponent implements OnInit {
   @Output() rangeClicked: EventEmitter<Object>;
   /** Event on dates updated */
   @Output() datesUpdated: EventEmitter<Object>;
-  /** Event on dates start date changed */
+  /** Event on start date changed */
   @Output() startDateChanged: EventEmitter<Object>;
-  /** Event on dates end date changed */
+  /** Event on end date changed */
   @Output() endDateChanged: EventEmitter<Object>;
 
   @ViewChild('pickerContainer') pickerContainer: ElementRef;
@@ -272,7 +268,7 @@ export class DaterangepickerComponent implements OnInit {
       if (this.showCustomRangeLabel) {
         this.rangesArray.push(this.locale.customRangeLabel);
       }
-      this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
+      this.showCalendarInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
       if (!this.timePicker) {
         this.startDate = this.startDate.startOf('day');
         this.endDate = this.endDate.endOf('day');
@@ -282,54 +278,54 @@ export class DaterangepickerComponent implements OnInit {
 
   renderTimePicker(side: SideEnum) {
       if (side === SideEnum.right && !this.endDate) {
-          return;
+        return;
       }
       let selected, minDate;
       const maxDate = this.maxDate;
       if (side === SideEnum.left) {
-          selected = this.startDate.clone(),
-          minDate = this.minDate;
+        selected = this.startDate.clone(),
+        minDate = this.minDate;
       } else if (side === SideEnum.right) {
-          selected = this.endDate.clone(),
-          minDate = this.startDate;
+        selected = this.endDate.clone(),
+        minDate = this.startDate;
       }
       const start = this.timePicker24Hour ? 0 : 1;
       const end = this.timePicker24Hour ? 23 : 12;
       this.timepickerVariables[side] = {
-          hours: [],
-          minutes: [],
-          minutesLabel: [],
-          seconds: [],
-          secondsLabel: [],
-          disabledHours: [],
-          disabledMinutes: [],
-          disabledSeconds: [],
-          selectedHour: 0,
-          selectedMinute: 0,
-          selectedSecond: 0,
+        hours: [],
+        minutes: [],
+        minutesLabel: [],
+        seconds: [],
+        secondsLabel: [],
+        disabledHours: [],
+        disabledMinutes: [],
+        disabledSeconds: [],
+        selectedHour: 0,
+        selectedMinute: 0,
+        selectedSecond: 0,
       };
       // generate hours
       for (let i = start; i <= end; i++) {
-          let i_in_24 = i;
-          if (!this.timePicker24Hour) {
-              i_in_24 = selected.hour() >= 12 ? (i === 12 ? 12 : i + 12) : (i === 12 ? 0 : i);
-          }
+        let i_in_24 = i;
+        if (!this.timePicker24Hour) {
+          i_in_24 = selected.hour() >= 12 ? (i === 12 ? 12 : i + 12) : (i === 12 ? 0 : i);
+        }
 
-          const time = selected.clone().hour(i_in_24);
-          let disabled = false;
-          if (minDate && time.minute(59).isBefore(minDate)) {
-              disabled = true;
-          }
-          if (maxDate && time.minute(0).isAfter(maxDate)) {
-              disabled = true;
-          }
+        const time = selected.clone().hour(i_in_24);
+        let disabled = false;
+        if (minDate && time.minute(59).isBefore(minDate)) {
+          disabled = true;
+        }
+        if (maxDate && time.minute(0).isAfter(maxDate)) {
+          disabled = true;
+        }
 
-          this.timepickerVariables[side].hours.push(i);
-          if (i_in_24 === selected.hour() && !disabled) {
-              this.timepickerVariables[side].selectedHour = i;
-          } else if (disabled) {
-              this.timepickerVariables[side].disabledHours.push(i);
-          }
+        this.timepickerVariables[side].hours.push(i);
+        if (i_in_24 === selected.hour() && !disabled) {
+          this.timepickerVariables[side].selectedHour = i;
+        } else if (disabled) {
+          this.timepickerVariables[side].disabledHours.push(i);
+        }
       }
       // generate minutes
       for (let i = 0; i < 60; i += this.timePickerIncrement) {
@@ -731,7 +727,7 @@ export class DaterangepickerComponent implements OnInit {
           this.chosenRange = null;
         }
         // if custom label: show calendar
-        this.showCalInRanges = true;
+        this.showCalendarInRanges = true;
       }
     }
 
@@ -1034,7 +1030,7 @@ export class DaterangepickerComponent implements OnInit {
     this.chosenRange = label;
     if (label === this.locale.customRangeLabel) {
         this.isShown  = true; // show calendars
-        this.showCalInRanges = true;
+        this.showCalendarInRanges = true;
     } else {
       const dates = this.ranges[label];
       this.startDate = dates[0].clone();
@@ -1044,7 +1040,7 @@ export class DaterangepickerComponent implements OnInit {
       } else {
           this.calculateChosenLabel();
       }
-      this.showCalInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
+      this.showCalendarInRanges = (!this.rangesArray.length) || this.alwaysShowCalendars;
 
       if (!this.timePicker) {
         this.startDate.startOf('day');
@@ -1311,12 +1307,12 @@ export class DaterangepickerComponent implements OnInit {
    * (as opposed to consisting of only previous/next month days)
    */
   hasCurrentMonthDays(currentMonth, row) {
-      for (let day = 0; day < 7; day++) {
-          if (row[day].month() === currentMonth) {
-              return true;
-          }
+    for (let day = 0; day < 7; day++) {
+      if (row[day].month() === currentMonth) {
+        return true;
       }
-      return false;
+    }
+    return false;
   }
 
   compareValuesFn(val1: any, val2: any) {

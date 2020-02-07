@@ -46,79 +46,101 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   private _validatorChange = Function.prototype;
   private _value: any;
   private localeDiffer: KeyValueDiffer<string, any>;
-  @Input()
-  minDate: _moment.Moment
-  @Input()
-  maxDate: _moment.Moment
-  @Input()
-  autoApply: boolean;
-  @Input()
-  alwaysShowCalendars: boolean;
-  @Input()
-  showCustomRangeLabel: boolean;
-  @Input()
-  linkedCalendars: boolean;
-  @Input()
-  dateLimit: number = null;
-  @Input()
-  singleDatePicker: boolean;
-  @Input()
-  showWeekNumbers: boolean;
-  @Input()
-  showISOWeekNumbers: boolean;
-  @Input()
-  showDropdowns: boolean;
+
+  // CALENDAR SETTINGS
+  /** Flag to display only one datepicker */
+  @Input() singleDatePicker = false;
+  /** Flag to display month and year dropdowns */
+  @Input() showDropdowns = false;
+  /** Flag to display week numbers */
+  @Input() showWeekNumbers = false;
+  /** Flag to display ISO week numbers */
+  @Input() showISOWeekNumbers = false;
+  /** Position calendar vertically */
+  @Input() drops: 'up' | 'down';
+  /** Position calendar horizontally  */
+  @Input() opens: 'right' | 'left' | 'center' | 'auto';
+  /** Minimun selectable date */
+  @Input() minDate: _moment.Moment = null;
+  /** Maximum selectable date */
+  @Input() maxDate: _moment.Moment = null;
+  /** Start date of current selection */
+  @Input() startDate = moment().startOf('day');
+  /** End date of current selection */
+  @Input() endDate = moment().endOf('day');
+  /** Max number of dates a user can select */
+  @Input() dateLimit: number = null;
+  /** Flag to display custom range label on ranges */
+  @Input() showCustomRangeLabel = false;
+  /** Flag to display apply button */
+  @Input() showCancelButton = false;
+  /** Flag to display apply button */
+  @Input() showApplyButton = false;
+  /** Flag to display clear button */
+  @Input() showClearButton = false;
+
+  // CALENDAR BEHAVIOR
+  /** Flag to keep the calendar open after choosing a range */
+  @Input() keepCalendarOpeningWithRange = false;
+  /** Flag to display the range label on input */
+  @Input() showRangeLabelOnInput = false;
+  /** Flag to allow selection range from end date first */
+  @Input() customRangeDirection = false;
+  /** Flag to lock start date and change only the end date */
+  @Input() lockStartDate = false;
+  /** Flag to update input when selecting a date/range  */
+  @Input() autoUpdateInput = true;
+  /** Flag to display the ranges with the calendar*/
+  @Input() alwaysShowCalendars = false;
+  /** Flag to link both calendars */
+  @Input() linkedCalendars = false;
+  /** Close datepicker when auto apply */
+  @Input() closeOnAutoApply = true;
+  /** Flag to auto apply changes on select */
+  @Input() autoApplyChanges = false;
+
+  @Input() maxSpan = false;
+
+  // timepicker variables
+  @Input() timePicker: Boolean = false;
+  @Input() timePicker24Hour: Boolean = false;
+  @Input() timePickerIncrement = 1;
+  @Input() timePickerSeconds: Boolean = false;
+  // end of timepicker variables
+
+  /** Set calendar locale settings */
+  private _locale: LocaleConfig = {};
+  @Input() set locale(value) {
+    this._locale = { ...this._localeService.config, ...value };
+  }
+
+  get locale(): any {
+    return this._locale;
+  }
+
+  /** Set custom ranges */
+  @Input() ranges: any;
+
+
+
+
   @Input()
   isInvalidDate: Function;
   @Input()
   isCustomDate: Function;
+
+
+  // CUSTOM CSS
+  @Input() firstMonthDayClass: string = null;
+  @Input() lastMonthDayClass: string = null;
+  @Input() emptyWeekRowClass: string = null;
+  @Input() firstDayOfNextMonthClass: string = null;
+  @Input() lastDayOfPreviousMonthClass: string = null;
+
   @Input()
-  showClearButton: boolean;
-  @Input()
-  customRangeDirection: boolean;
-  @Input()
-  ranges: any;
-  @Input()
-  opens: string;
-  @Input()
-  drops: string;
-  firstMonthDayClass: string;
-  @Input()
-  lastMonthDayClass: string;
-  @Input()
-  emptyWeekRowClass: string;
-  @Input()
-  firstDayOfNextMonthClass: string;
-  @Input()
-  lastDayOfPreviousMonthClass: string;
-  @Input()
-  keepCalendarOpeningWithRange: boolean;
-  @Input()
-  showRangeLabelOnInput: boolean;
-  @Input()
-  showCancel: boolean = false;
-  @Input()
-  lockStartDate: boolean = false;
-  // timepicker variables
-  @Input()
-  timePicker: Boolean = false;
-  @Input()
-  timePicker24Hour: Boolean = false;
-  @Input()
-  timePickerIncrement: number = 1;
-  @Input()
-  timePickerSeconds: Boolean = false;
-  @Input() closeOnAutoApply = true;
-  _locale: LocaleConfig = {};
-  @Input() set locale(value) {
-    this._locale = {...this._localeService.config, ...value};
-  }
-  get locale(): any {
-    return this._locale;
-  }
-  @Input()
-  private _endKey: string = 'endDate';
-  private _startKey: string = 'startDate';
+  private _endKey = 'endDate';
+  private _startKey = 'startDate';
+
   @Input() set startKey(value) {
     if (value !== null) {
       this._startKey = value;
@@ -126,6 +148,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this._startKey = 'startDate';
     }
   }
+
   @Input() set endKey(value) {
     if (value !== null) {
       this._endKey = value;
@@ -133,6 +156,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this._endKey = 'endDate';
     }
   }
+
   notForChangesProperty: Array<string> = [
     'locale',
     'endKey',
@@ -147,11 +171,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this._onChange(val);
     this._changeDetectorRef.markForCheck();
   }
+
+  /** Event on change */
   @Output('change') onChange: EventEmitter<Object> = new EventEmitter();
+  /** Event on range clicked */
   @Output('rangeClicked') rangeClicked: EventEmitter<Object> = new EventEmitter();
+  /** Event on dates updated */
   @Output('datesUpdated') datesUpdated: EventEmitter<Object> = new EventEmitter();
+   /** Event on start date changed */
   @Output() startDateChanged: EventEmitter<Object> = new EventEmitter();
+  /** Event on end date changed */
   @Output() endDateChanged: EventEmitter<Object> = new EventEmitter();
+
   constructor(
     public viewContainerRef: ViewContainerRef,
     public _changeDetectorRef: ChangeDetectorRef,
@@ -317,8 +348,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
           left: element.offsetLeft + 'px',
           right: 'auto'
         };
-      }
-      else {
+      } else {
         style = {
             top: containerTop,
             left: position + 'px',

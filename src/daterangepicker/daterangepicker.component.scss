@@ -404,7 +404,8 @@ $robotoFont: Roboto, sans-serif !important;
     line-height: 30px;
     position: relative;
     .select {
-      display: inline;
+      display: inline-block;
+      width: 60px;
       .select-item {
         display: inline-block;
         width: auto;
@@ -412,25 +413,26 @@ $robotoFont: Roboto, sans-serif !important;
         font-family: inherit;
         background-color: transparent;
         padding: 10px 10px 10px 0;
-        font-size: 18px;
-        border-radius: 0;
+        font-size: 14px;
         border: none;
         border-bottom: 1px solid rgba(0,0,0, 0.12);
+        border-radius: 6px;
+        padding: 0 7px;
         /* Remove focus */
-        &:after {
-          position: absolute;
-          top: 18px;
-          right: 10px;
-          /* Styling the down arrow */
-          width: 0;
-          height: 0;
-          padding: 0;
-          content: '';
-          border-left: 6px solid transparent;
-          border-right: 6px solid transparent;
-          border-top: 6px solid rgba(0, 0, 0, 0.12);
-          pointer-events: none;
-        }
+        // &:after {
+        //   position: absolute;
+        //   top: 18px;
+        //   right: 10px;
+        //   /* Styling the down arrow */
+        //   width: 0;
+        //   height: 0;
+        //   padding: 0;
+        //   content: '';
+        //   border-left: 6px solid transparent;
+        //   border-right: 6px solid transparent;
+        //   border-top: 6px solid rgba(0, 0, 0, 0.12);
+        //   pointer-events: none;
+        // }
         &:focus {
           outline: none;
         }
