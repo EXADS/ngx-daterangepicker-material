@@ -252,10 +252,18 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
+  /**
+   * Event on blur
+   */
   onBlur(): void {
     this._onTouched();
   }
 
+  /**
+   * Open picker
+   *
+   * @param event
+   */
   open(event?: any): void {
     this.picker.show(event);
     setTimeout(() => {
@@ -263,10 +271,20 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     });
   }
 
+  /**
+   * Hide picker
+   *
+   * @param e
+   */
   hide(e?): void {
     this.picker.hide(e);
   }
 
+  /**
+   * Toggle picker
+   *
+   * @param e
+   */
   toggle(e?): void {
     if (this.picker.isShown) {
       this.hide(e);
@@ -275,22 +293,37 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
+  /**
+   * Clear picker value
+   */
   clear(): void {
     this.picker.clear();
   }
 
+  /**
+   * Set input value
+   */
   writeValue(value): void {
     this.setValue(value);
   }
 
+  /**
+   * Register change
+   */
   registerOnChange(fn): void {
     this._onChange = fn;
   }
 
+  /**
+   * Register on touch
+   */
   registerOnTouched(fn): void {
     this._onTouched = fn;
   }
 
+  /**
+   * Set input value
+   */
   private setValue(val: any): void {
     if (val) {
       this.value = val;
@@ -311,7 +344,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
 
   /**
    * Set position of the calendar
-   *
    */
   setPosition(): void {
     let style;
@@ -365,6 +397,11 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
+  /**
+   * Event on input change
+   *
+   * @param e
+   */
   inputChanged(e): void {
     if (e.target.tagName.toLowerCase() !== 'input') {
       return;
@@ -394,7 +431,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
    * For click outside of the calendar's container
    *
    * @param event event object
-   *
    */
   @HostListener('document:click', ['$event'])
   outsideClick(event): void {
