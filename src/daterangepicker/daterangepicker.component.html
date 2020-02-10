@@ -36,9 +36,9 @@
                 <ng-container *ngIf="showDropdowns && calendarVariables.left.dropdowns">
                     <div class="dropdowns">
                       <mat-select class="monthSelect"
-                                  [compareWith]="compareValuesFn"
                                   [(value)]="calendarVariables.left.dropdowns.currentMonth"
-                                  (selectionChange)="onMonthChanged($event, sideEnum.left)">
+                                  (selectionChange)="onMonthChanged($event, sideEnum.left)"
+                                  stopClickPropagation>
                         <mat-option [disabled]="(calendarVariables.left.dropdowns.inMinYear && m < calendarVariables.left.minDate.month()) ||
                                     (calendarVariables.left.dropdowns.inMaxYear && m > calendarVariables.left.maxDate.month())"
                                     *ngFor="let m of calendarVariables.left.dropdowns.monthArrays"
@@ -50,7 +50,6 @@
                     </div>
                     <div class="dropdowns">
                       <mat-select class="yearSelect"
-                                [compareWith]="compareValuesFn"
                                 [(value)]="calendarVariables.left.dropdowns.currentYear"
                                 (selectionChange)="onYearChanged($event, sideEnum.left);false">
                         <mat-option *ngFor="let y of calendarVariables.left.dropdowns.yearArrays"
@@ -97,12 +96,6 @@
     </div>
     <div class="calendar-time" *ngIf="timePicker">
         <div class="select">
-            <!-- <select class="hourselect select-item" [disabled]="!endDate" [(ngModel)]="timepickerVariables.left.selectedHour" (ngModelChange)="timeChanged($event, sideEnum.left)">
-                <option *ngFor="let i of timepickerVariables.left.hours"
-                [value]="i"
-                [disabled]="timepickerVariables.left.disabledHours.indexOf(i) > -1">{{i}}</option>
-            </select> -->
-
           <mat-select class="hourselect select-item"
                       [disabled]="!endDate"
                       [(ngModel)]="timepickerVariables.left.selectedHour"
@@ -134,7 +127,7 @@
             <mat-select class="select-item secondselect"
                         [disabled]="!endDate"
                         [(ngModel)]="timepickerVariables.left.selectedSecond"
-                        (ngModelChange)="timeChanged($event, sideEnum.left)">
+                        (selectionChange)="timeChanged($event, sideEnum.left)">
               <mat-option *ngFor="let i of timepickerVariables.left.seconds; let index = index;"
                           [value]="i"
                           [disabled]="timepickerVariables.left.disabledSeconds.indexOf(i) > -1"
@@ -146,7 +139,7 @@
         <div class="select">
           <mat-select class="select-item ampmselect"
                       [(ngModel)]="timepickerVariables.left.ampmModel"
-                      (ngModelChange)="timeChanged($event, sideEnum.left)">
+                      (selectionChange)="timeChanged($event, sideEnum.left)">
             <mat-option value="AM" [disabled]="timepickerVariables.left.amDisabled" stopClickPropagation>AM</mat-option>
             <mat-option value="PM" [disabled]="timepickerVariables.left.pmDisabled" stopClickPropagation>PM</mat-option>
           </mat-select>
@@ -170,7 +163,6 @@
                 <ng-container *ngIf="showDropdowns && calendarVariables.right.dropdowns">
                     <div class="dropdowns">
                       <mat-select class="monthSelect"
-                                [compareWith]="compareValuesFn"
                                 [(value)]="calendarVariables.right.dropdowns.currentMonth"
                                 (selectionChange)="onMonthChanged($event, sideEnum.right)">
                         <mat-option [disabled]="(calendarVariables.right.dropdowns.inMinYear &&
@@ -186,7 +178,6 @@
                     </div>
                     <div class="dropdowns">
                         <mat-select class="yearSelect"
-                                    [compareWith]="compareValuesFn"
                                     [(value)]="calendarVariables.right.dropdowns.currentYear"
                                     (selectionChange)="onYearChanged($event, sideEnum.right)">
                           <mat-option *ngFor="let y of calendarVariables.right.dropdowns.yearArrays"
@@ -232,7 +223,6 @@
     <div class="calendar-time" *ngIf="timePicker">
       <div class="select">
         <mat-select class="select-item hourselect"
-                    [compareWith]="compareValuesFn"
                     [(ngModel)]="timepickerVariables.right.selectedHour"
                     (selectionChange)="timeChanged($event, sideEnum.right)"
                     [disabled]="!endDate">
@@ -247,7 +237,6 @@
       </div>
       <div class="select">
         <mat-select class="select-item minuteselect"
-                    [compareWith]="compareValuesFn"
                     [disabled]="!endDate"
                     [(ngModel)]="timepickerVariables.right.selectedMinute"
                     (selectionChange)="timeChanged($event, sideEnum.right)">

@@ -250,21 +250,22 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  onBlur() {
+  onBlur(): void {
     this._onTouched();
   }
 
-  open(event?: any) {
+  open(event?: any): void {
     this.picker.show(event);
     setTimeout(() => {
       this.setPosition();
     });
   }
 
-  hide(e?) {
+  hide(e?): void {
     this.picker.hide(e);
   }
-  toggle(e?) {
+
+  toggle(e?): void {
     if (this.picker.isShown) {
       this.hide(e);
     } else {
@@ -272,20 +273,23 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     }
   }
 
-  clear() {
+  clear(): void {
     this.picker.clear();
   }
 
-  writeValue(value) {
+  writeValue(value): void {
     this.setValue(value);
   }
-  registerOnChange(fn) {
+
+  registerOnChange(fn): void {
     this._onChange = fn;
   }
-  registerOnTouched(fn) {
+
+  registerOnTouched(fn): void {
     this._onTouched = fn;
   }
-  private setValue(val: any) {
+
+  private setValue(val: any): void {
     if (val) {
       this.value = val;
       if (val[this._startKey]) {
@@ -302,10 +306,12 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this.picker.clear();
     }
   }
+
   /**
    * Set position of the calendar
+   *
    */
-  setPosition() {
+  setPosition(): void {
     let style;
     let containerTop;
     const container = this.picker.pickerContainer.nativeElement;
@@ -356,7 +362,8 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       this._renderer.setStyle(container, 'right', style.right);
     }
   }
-  inputChanged(e) {
+
+  inputChanged(e): void {
     if (e.target.tagName.toLowerCase() !== 'input') {
       return;
     }
@@ -379,11 +386,13 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.setStartDate(start);
     this.picker.setEndDate(end);
     this.picker.updateView();
-
   }
+
   /**
    * For click outside of the calendar's container
+   *
    * @param event event object
+   *
    */
   @HostListener('document:click', ['$event'])
   outsideClick(event): void {
@@ -391,7 +400,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       return;
     }
 
-    if (event.target.classList.contains('ngx-daterangepicker-action')) {
+    if (event.target.classList.contains('ngx-daterangepicker-action') || event.target.classList.contains('cdk-overlay-backdrop')) {
       return;
     }
 
