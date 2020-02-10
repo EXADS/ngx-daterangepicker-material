@@ -7,7 +7,8 @@
     'inline': inline,
     'double': !singleDatePicker && showCalendarInRanges,
     'show-ranges': rangesArray.length
-}" [class]="'drops-' + drops + '-' + opens">
+}" [class]="'drops-' + drops + '-' + opens"
+stopClickPropagation>
   <div class="ranges">
     <ul>
       <li *ngFor="let range of rangesArray" stopClickPropagation>
@@ -26,7 +27,7 @@
           <tr>
             <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
             <ng-container *ngIf="!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && !this.linkedCalendars">
-                <th (click)="onClickPrev(sideEnum.left)" class="prev available" >
+                <th (click)="onClickPrev(sideEnum.left)" class="prev available" stopClickPropagation>
                 </th>
             </ng-container>
             <ng-container *ngIf="!(!calendarVariables.left.minDate || calendarVariables.left.minDate.isBefore(calendarVariables.left.calendar.firstDay) && !this.linkedCalendars)">
@@ -51,7 +52,8 @@
                     <div class="dropdowns">
                       <mat-select class="yearSelect"
                                 [(value)]="calendarVariables.left.dropdowns.currentYear"
-                                (selectionChange)="onYearChanged($event, sideEnum.left);false">
+                                (selectionChange)="onYearChanged($event, sideEnum.left);"
+                                stopClickPropagation>
                         <mat-option *ngFor="let y of calendarVariables.left.dropdowns.yearArrays"
                                     [value]="y"
                                     stopClickPropagation>
@@ -65,7 +67,7 @@
                 </ng-container>
             </th>
             <ng-container *ngIf="(!calendarVariables.left.maxDate || calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars || singleDatePicker )">
-                <th class="next available" (click)="onClickNext(sideEnum.left)">
+                <th class="next available" (click)="onClickNext(sideEnum.left)" stopClickPropagation>
                 </th>
             </ng-container>
             <ng-container *ngIf="!((!calendarVariables.left.maxDate || calendarVariables.left.maxDate.isAfter(calendarVariables.left.calendar.lastDay)) && (!linkedCalendars || singleDatePicker ))">
@@ -153,7 +155,7 @@
           <tr>
             <th *ngIf="showWeekNumbers || showISOWeekNumbers"></th>
             <ng-container *ngIf="(!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars">
-                <th (click)="onClickPrev(sideEnum.right)" class="prev available">
+                <th (click)="onClickPrev(sideEnum.right)" class="prev available" stopClickPropagation>
                 </th>
             </ng-container>
             <ng-container *ngIf="!((!calendarVariables.right.minDate || calendarVariables.right.minDate.isBefore(calendarVariables.right.calendar.firstDay)) && !this.linkedCalendars)">
@@ -164,7 +166,8 @@
                     <div class="dropdowns">
                       <mat-select class="monthSelect"
                                 [(value)]="calendarVariables.right.dropdowns.currentMonth"
-                                (selectionChange)="onMonthChanged($event, sideEnum.right)">
+                                (selectionChange)="onMonthChanged($event, sideEnum.right)"
+                                stopClickPropagation>
                         <mat-option [disabled]="(calendarVariables.right.dropdowns.inMinYear &&
                                     m < calendarVariables.right.minDate.month()) ||
                                     (calendarVariables.right.dropdowns.inMaxYear &&
@@ -179,7 +182,8 @@
                     <div class="dropdowns">
                         <mat-select class="yearSelect"
                                     [(value)]="calendarVariables.right.dropdowns.currentYear"
-                                    (selectionChange)="onYearChanged($event, sideEnum.right)">
+                                    (selectionChange)="onYearChanged($event, sideEnum.right)"
+                                    stopClickPropagation>
                           <mat-option *ngFor="let y of calendarVariables.right.dropdowns.yearArrays"
                                       [value]="y"
                                       stopClickPropagation>
@@ -193,7 +197,7 @@
                 </ng-container>
             </th>
             <ng-container *ngIf="!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker)">
-                <th class="next available" (click)="onClickNext(sideEnum.right)">
+                <th class="next available" (click)="onClickNext(sideEnum.right)" stopClickPropagation>
                 </th>
             </ng-container>
             <ng-container *ngIf="!(!calendarVariables.right.maxDate || calendarVariables.right.maxDate.isAfter(calendarVariables.right.calendar.lastDay) && (!linkedCalendars || singleDatePicker))">
