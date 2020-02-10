@@ -2,7 +2,6 @@ import { CommonModule } from '@angular/common';
 import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { MatSelectModule } from '@angular/material/select';
-import { MatIconModule } from '@angular/material/icon';
 
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { DaterangepickerDirective } from './daterangepicker.directive';
@@ -20,14 +19,12 @@ import { StopPropagationDirective } from './stop-propagation.directive';
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    MatSelectModule,
-    MatIconModule
+    MatSelectModule
   ],
   providers: [],
   exports: [
     DaterangepickerComponent,
-    DaterangepickerDirective,
-    StopPropagationDirective
+    DaterangepickerDirective
   ],
   entryComponents: [
     DaterangepickerComponent
