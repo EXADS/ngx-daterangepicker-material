@@ -14,10 +14,10 @@ import {
 import { NG_VALUE_ACCESSOR } from '@angular/forms';
 import { FormControl} from '@angular/forms';
 import { MatSelectChange } from '@angular/material/select';
-import { LocaleConfig } from './daterangepicker.config';
 
 import * as _moment from 'moment';
 import { LocaleService } from './locale.service';
+import { LocaleConfig } from './daterangepicker.config';
 const moment = _moment;
 
 export enum SideEnum {
@@ -160,12 +160,6 @@ export class DaterangepickerComponent implements OnInit {
   @Output() endDateChanged: EventEmitter<Object>;
 
   @ViewChild('pickerContainer') pickerContainer: ElementRef;
-
-  @HostListener('click', ['$event'])
-  stopClick(event: Event) {
-    event.preventDefault();
-    event.stopPropagation();
-  }
 
   constructor(
     private el: ElementRef,
