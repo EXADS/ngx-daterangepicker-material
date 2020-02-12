@@ -158,6 +158,10 @@ export class DaterangepickerComponent implements OnInit {
   @Output() startDateChanged: EventEmitter<Object>;
   /** Event on end date changed */
   @Output() endDateChanged: EventEmitter<Object>;
+  /** Event when datepicker is shown */
+  @Output() showDaterangepicker: EventEmitter<void>;
+  /** Event when datepicker is hidden */
+  @Output() hideDaterangepicker: EventEmitter<void>;
 
   @ViewChild('pickerContainer') pickerContainer: ElementRef;
 
@@ -171,6 +175,8 @@ export class DaterangepickerComponent implements OnInit {
     this.datesUpdated = new EventEmitter();
     this.startDateChanged = new EventEmitter();
     this.endDateChanged = new EventEmitter();
+    this.showDaterangepicker = new EventEmitter();
+    this.hideDaterangepicker = new EventEmitter();
   }
 
   ngOnInit() {
@@ -439,12 +445,12 @@ export class DaterangepickerComponent implements OnInit {
       curDate.hour(12);
 
       if (this.minDate && calendar[row][col].format('YYYY-MM-DD') === this.minDate.format('YYYY-MM-DD') &&
-      calendar[row][col].isBefore(this.minDate) && side === 'left') {
+      calendar[row][col].isBefore(this.minDate) && side === this.sideEnum.left) {
         calendar[row][col] = this.minDate.clone();
       }
 
       if (this.maxDate && calendar[row][col].format('YYYY-MM-DD') === this.maxDate.format('YYYY-MM-DD') &&
-      calendar[row][col].isAfter(this.maxDate) && side === 'right') {
+        calendar[row][col].isAfter(this.maxDate) && side === this.sideEnum.right) {
         calendar[row][col] = this.maxDate.clone();
       }
     }
@@ -456,7 +462,7 @@ export class DaterangepickerComponent implements OnInit {
       this.rightCalendar.calendar = calendar;
     }
     // Display the calendar
-    const minDate = side === 'left' ? this.minDate : this.startDate;
+    const minDate = side === this.sideEnum.left ? this.minDate : this.startDate;
     let maxDate = this.maxDate;
     // adjust maxDate to reflect the dateLimit setting in order to
     // grey out end dates beyond the dateLimit
@@ -1022,7 +1028,8 @@ export class DaterangepickerComponent implements OnInit {
     e.stopPropagation();
     this.chosenRange = label;
     if (label === this.locale.customRangeLabel) {
-        this.isShown  = true; // show calendars
+        this.isShown = true; // show calendars
+        this.showDaterangepicker.emit();
         this.showCalendarInRanges = true;
     } else {
       const dates = this.ranges[label];
@@ -1077,6 +1084,7 @@ export class DaterangepickerComponent implements OnInit {
     this._old.start = this.startDate.clone();
     this._old.end = this.endDate.clone();
     this.isShown = true;
+    this.showDaterangepicker.emit();
     this.updateView();
   }
 
@@ -1103,6 +1111,7 @@ export class DaterangepickerComponent implements OnInit {
     // if picker is attached to a text input, update it
     this.updateElement();
     this.isShown = false;
+    this.hideDaterangepicker.emit();
     this._ref.detectChanges();
   }
 
