@@ -1028,9 +1028,9 @@ export class DaterangepickerComponent implements OnInit {
     e.stopPropagation();
     this.chosenRange = label;
     if (label === this.locale.customRangeLabel) {
-        this.isShown = true; // show calendars
-        this.showDaterangepicker.emit();
-        this.showCalendarInRanges = true;
+      this.isShown = true; // show calendars
+      this.showDaterangepicker.emit();
+      this.showCalendarInRanges = true;
     } else {
       const dates = this.ranges[label];
       this.startDate = dates[0].clone();
