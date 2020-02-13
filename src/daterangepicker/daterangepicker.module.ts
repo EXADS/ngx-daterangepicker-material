@@ -24,7 +24,8 @@ import { StopPropagationDirective } from './stop-propagation.directive';
   providers: [],
   exports: [
     DaterangepickerComponent,
-    DaterangepickerDirective
+    DaterangepickerDirective,
+    StopPropagationDirective
   ],
   entryComponents: [
     DaterangepickerComponent
