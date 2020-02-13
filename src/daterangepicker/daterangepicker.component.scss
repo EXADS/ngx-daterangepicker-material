@@ -84,9 +84,7 @@ $robotoFont: Roboto, sans-serif !important;
   font-size: 14px;
   background-color: #ffffff;
   box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.16), 0 2px 8px 0 rgba(0, 0, 0, 0.12);
-  // &.double {
-  //   width: $md-drppicker-width-double;
-  // }
+
   &.inline {
     position: relative;
     display: inline-block;
@@ -306,14 +304,12 @@ $robotoFont: Roboto, sans-serif !important;
       }
     }
 
-    //
     // Date Range
     &.in-range {
       background-color: $md-drppicker-in-range-bg-color;
       border-color: $md-drppicker-in-range-border-color;
       color: $md-drppicker-in-range-color;
 
-      // TODO: Should this be static or should it be parameterized?
       border-radius: 0;
     }
 
