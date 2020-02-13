@@ -277,7 +277,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
   open(event?: any): void {
     this.picker.show(event);
     setTimeout(() => {
-      this.setPosition();
       this.showDaterangepicker.emit();
     });
   }
@@ -351,61 +350,6 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
       }
     } else {
       this.picker.clear();
-    }
-  }
-
-  /**
-   * Set position of the calendar
-   */
-  setPosition(): void {
-    let style;
-    let containerTop;
-    const container = this.picker.pickerContainer.nativeElement;
-    const element = this._el.nativeElement;
-    if (this.drops && this.drops === 'up') {
-      containerTop = (element.offsetTop - container.clientHeight) + 'px';
-    } else {
-      containerTop = 'auto';
-    }
-    if (this.opens === 'left') {
-      style = {
-          top: containerTop,
-          left: (element.offsetLeft - container.clientWidth + element.clientWidth) + 'px',
-          right: 'auto'
-      };
-    } else if (this.opens === 'center') {
-        style = {
-          top: containerTop,
-          left: (element.offsetLeft  +  element.clientWidth / 2
-                  - container.clientWidth / 2) + 'px',
-          right: 'auto'
-        };
-    } else if (this.opens === 'right') {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft  + 'px',
-          right: 'auto'
-        };
-    } else {
-      const position = element.offsetLeft  +  element.clientWidth / 2 - container.clientWidth / 2;
-      if (position < 0) {
-        style = {
-          top: containerTop,
-          left: element.offsetLeft + 'px',
-          right: 'auto'
-        };
-      } else {
-        style = {
-            top: containerTop,
-            left: position + 'px',
-            right: 'auto'
-        };
-      }
-    }
-    if (style) {
-      this._renderer.setStyle(container, 'top', style.top);
-      this._renderer.setStyle(container, 'left', style.left);
-      this._renderer.setStyle(container, 'right', style.right);
     }
   }
 
