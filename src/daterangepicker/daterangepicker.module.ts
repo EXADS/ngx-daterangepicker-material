@@ -1,26 +1,31 @@
 import { CommonModule } from '@angular/common';
-import {  ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
+import { ModuleWithProviders, NgModule, Optional, SkipSelf } from '@angular/core';
 import { FormsModule, ReactiveFormsModule} from '@angular/forms';
+import { MatSelectModule } from '@angular/material/select';
 
 import { DaterangepickerComponent } from './daterangepicker.component';
 import { DaterangepickerDirective } from './daterangepicker.directive';
 import { LocaleConfig, LOCALE_CONFIG } from './daterangepicker.config';
 import { LocaleService } from './locale.service';
+import { StopPropagationDirective } from './stop-propagation.directive';
 
 @NgModule({
   declarations: [
     DaterangepickerComponent,
-    DaterangepickerDirective
+    DaterangepickerDirective,
+    StopPropagationDirective
   ],
   imports: [
     CommonModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    MatSelectModule
   ],
   providers: [],
   exports: [
     DaterangepickerComponent,
-    DaterangepickerDirective
+    DaterangepickerDirective,
+    StopPropagationDirective
   ],
   entryComponents: [
     DaterangepickerComponent

@@ -1,4 +1,5 @@
 # ngx-daterangepicker-material
+
 > Pure Angular 2+ Date range picker.
 
 [![Build Status](https://travis-ci.org/fetrarij/ngx-daterangepicker-material.svg?branch=master)](https://travis-ci.org/fetrarij/ngx-daterangepicker-material)
@@ -11,10 +12,9 @@ This plugin is a rewrite to angular from [bootstrap daterangepicker](http://www.
 
 This plugin have an independant theme which looks more close to material design, so the material design is just a style.
 
-
 ![](screen.png)
 
-demo:  https://fetrarij.github.io/ngx-daterangepicker-material/
+demo:  <https://fetrarij.github.io/ngx-daterangepicker-material/>
 
 ## Installation
 
@@ -49,12 +49,15 @@ Html:
 ```html
 <input type="text" ngxDaterangepickerMd [(ngModel)]="selected" class="form-control"/>
 ```
+
 Typescript:
 
 ````typescript
 selected: {startDate: Moment, endDate: Moment};
 ````
-### with some options:
+
+### with some options
+
 Html:
 
 ```html
@@ -66,11 +69,13 @@ Html:
     [(ngModel)]="selected"
     name="daterange"/>
 ```
+
 Typescript:
 
 ````typescript
 selected: {start: Moment, end: Moment};
 ````
+
 You can [play with our online demo here](https://fetrarij.github.io/ngx-daterangepicker-material/)
 and [browse our demo code here](./demo/src/app).
 
@@ -83,10 +88,9 @@ You can use the component directly in your templates, which will set its `inline
 </ngx-daterangepicker-material>
 ```
 
-
 ## Available options
 
-### autoApply, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton, showCancel
+### autoApplyChanges, showDropdowns, singleDatePicker, showWeekNumbers, showISOWeekNumbers, alwaysShowCalendars, showClearButton, showCancelButton, showApplyButton
 
 >These options are booleans
 
@@ -95,6 +99,7 @@ You can use the component directly in your templates, which will set its `inline
 >(function) A function that is passed each date in the calendars before they are displayed, and may return a string or array of CSS class names to apply to that date's calendar cell
 
 ### isInvalidDate
+
 >(function) A function that is passed each date in the two calendars before they are displayed, and may return true or false to indicate whether that date should be available for selection or not.
 
 ### minDate, maxDate
@@ -108,6 +113,7 @@ You can use the component directly in your templates, which will set its `inline
 ### locale
 
 >the locale options is an object with:
+
 ```javascript
 {
     format: 'MM/DD/YYYY', // could be 'YYYY-MM-DDTHH:mm:ss.SSSSZ'
@@ -124,6 +130,7 @@ You can use the component directly in your templates, which will set its `inline
     firstDay: 1 // first day is monday
 }
 ```
+
 [Check here](#global-locale) for setting the global locale
 
 ### startKey and endKey
@@ -133,6 +140,7 @@ Theses 2 options are for the key you want for the value, default are `startDate`
 Specifiyng `startKey` and `endKey` would have different model:
 
 example:
+
 ```html
 <input type="text" ngxDaterangepickerMd startKey="start" endKey="end" [(ngModel)]="model">
 ```
@@ -142,9 +150,11 @@ the model we got would be:  `{start: Date, end: Date}`
 ### ranges
 
 (object) Set predefined date ranges the user can select from. Each key is the label for the range, and its value an array with two dates representing the bounds of the range. As an example:
+
 ```html
 <input type="text" ngxDaterangepickerMd startKey="start" endKey="end" [ranges]="ranges" [(ngModel)]="model">
 ```
+
 ```javascript
 ranges: any = {
     'Today': [moment(), moment()],
@@ -155,6 +165,7 @@ ranges: any = {
     'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
   }
 ```
+
 #### Other options with ranges
 
 You can use bellow options when using the ranges. The default are `false`.
@@ -178,7 +189,6 @@ You can use theses options:
 | timePicker24Hour | boolean | set to `true` if you want to set the timepicker to 24h instead of having AM and PM |
 | timePickerIncrement | number | set the value increment of the minutes (eg: for `12` there would be 0mn, 15mn, 30mn, 45mn,) |
 | timePickerSeconds | boolean | set `true` if you want do display second's select |
-
 
 ### Customisation
 
@@ -248,6 +258,6 @@ Run `npm test` or `ng test` to run tests.
 
 [![paypal](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.paypal.com/cgi-bin/webscr?cmd=_s-xclick&hosted_button_id=THF6M338KQ626)
 
-
 ## [License](https://github.com/fetrarij/ngx-daterangepicker-material/blob/master/LICENSE)
+
 MIT
