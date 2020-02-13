@@ -278,6 +278,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
     this.picker.show(event);
     setTimeout(() => {
       this.setPosition();
+      this.showDaterangepicker.emit();
     });
   }
 
@@ -288,6 +289,7 @@ export class DaterangepickerDirective implements OnInit, OnChanges, DoCheck {
    */
   hide(e?): void {
     this.picker.hide(e);
+    this.hideDaterangepicker.emit();
   }
 
   /**
